@@ -3,8 +3,6 @@
 ## Grafana stack: `Prometheus`, `Grafana`, `Loki`, `Tempo`
 
 - [Integrating Grafana Observability Stack into a Spring Boot Application: A Comprehensive Guide](https://medium.com/@narasimha4789/integrating-grafana-observability-stack-into-a-spring-boot-application-a-comprehensive-guide-eb9d21f29fe6)
-- [Monitoring Spring Boot Applications with Prometheus and Grafana](https://blog.stackademic.com/monitoring-spring-boot-applications-with-prometheus-and-grafana-99805c27246a)
-- [Monitor Spring reactive micro-services with Prometheus and Grafana: a how-to guide](https://blog.devops.dev/monitor-spring-reactive-micro-services-with-prometheus-and-grafana-a-how-to-guide-587b41c83156)
 
 ---
 
@@ -156,7 +154,7 @@ Características:
 - Capacidad de hacer preguntas que no habías pensado antes.
 - Contexto rico para debugging y troubleshooting.
 
-En `Spring Boot`: Integración completa de los "tres pilares":
+Integración completa de los `tres pilares` en `Spring Boot`:
 
 - `Métricas`: Micrometer + Prometheus + Grafana
 - `Logs`: Structured logging + Loki + Grafana

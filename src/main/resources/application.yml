@@ -6,3 +6,9 @@ server:
 spring:
   application:
     name: spring-observability
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, metrics, prometheus
