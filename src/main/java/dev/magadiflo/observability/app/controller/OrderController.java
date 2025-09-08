@@ -1,6 +1,8 @@
 package dev.magadiflo.observability.app.controller;
 
 import dev.magadiflo.observability.app.model.Order;
+import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.MeterRegistry;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,6 +24,14 @@ import java.util.concurrent.ConcurrentHashMap;
 public class OrderController {
 
     private final Map<String, Order> orders = new ConcurrentHashMap<>();
+    private final Counter orderCreatedCounter;
+
+    public OrderController(MeterRegistry registry) {
+        // Creamos un Counter personalizado
+        this.orderCreatedCounter = Counter.builder("orders_created_total")
+                .description("Total de órdenes creadas")
+                .register(registry);
+    }
 
     @GetMapping
     public ResponseEntity<List<Order>> getAllOrders() {
@@ -40,6 +50,10 @@ public class OrderController {
         String orderId = UUID.randomUUID().toString();
         Order order = new Order(orderId, request.product(), request.price(), request.quantity());
         this.orders.put(orderId, order);
+
+        // Incrementamos el counter
+        this.orderCreatedCounter.increment();
+
         return ResponseEntity.status(HttpStatus.CREATED).body(order);
     }
 }
