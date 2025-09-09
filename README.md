@@ -1,6 +1,6 @@
 # Observabilidad en Spring Boot: Métricas, Logs y Traces
 
-## Grafana stack: `Prometheus`, `Grafana`, `Loki`, `Tempo`
+## PLG Stack: `Prometheus`, `Loki`, `Grafana`
 
 - [Integrating Grafana Observability Stack into a Spring Boot Application: A Comprehensive Guide](https://medium.com/@narasimha4789/integrating-grafana-observability-stack-into-a-spring-boot-application-a-comprehensive-guide-eb9d21f29fe6)
 
