@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -37,26 +38,47 @@ public class OrderController {
 
     @GetMapping
     public ResponseEntity<List<Order>> getAllOrders() {
+        log.info("Obteniendo todas las órdenes. Total actual: {}", this.orders.size());
         return ResponseEntity.ok(new ArrayList<>(this.orders.values()));
     }
 
     @GetMapping(path = "/{orderId}")
     public ResponseEntity<Order> getOrder(@PathVariable String orderId) {
+        log.info("Buscando orden con ID: {}", orderId);
+
         return Optional.ofNullable(this.orders.get(orderId))
-                .map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
+                .map(order -> {
+                    log.debug("Orden encontrada: {}", order);
+                    return ResponseEntity.ok(order);
+                })
+                .orElseGet(() -> {
+                    log.warn("Orden con ID: {} no encontrada", orderId);
+                    return ResponseEntity.notFound().build();
+                });
     }
 
     @PostMapping
     public ResponseEntity<Order> createOrder(@RequestBody Order request) {
-        String orderId = UUID.randomUUID().toString();
-        Order order = new Order(orderId, request.product(), request.price(), request.quantity());
-        this.orders.put(orderId, order);
+        try {
+            // Validación simple para generar diferentes tipos de logs
+            if (request.price().compareTo(BigDecimal.ZERO) <= 0) {
+                log.error("Error: Precio inválido recibido: {}", request.price());
+                return ResponseEntity.badRequest().build();
+            }
 
-        // Incrementa el contador cada vez que se crea una orden
-        log.info("Incrementando el counter");
-        this.orderCreatedCounter.increment();
+            String orderId = UUID.randomUUID().toString();
+            Order order = new Order(orderId, request.product(), request.price(), request.quantity());
+            this.orders.put(orderId, order);
+            log.info("Nueva orden creada: {}", order);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(order);
+            // Incrementa el contador cada vez que se crea una orden
+            log.info("Incrementando el counter");
+            this.orderCreatedCounter.increment();
+
+            return ResponseEntity.status(HttpStatus.CREATED).body(order);
+        } catch (Exception e) {
+            log.error("Error inesperado al crear orden: {}", e.getMessage(), e);
+            return ResponseEntity.internalServerError().build();
+        }
     }
 }
