@@ -22,6 +22,26 @@ services:
     networks:
       - observability-net
 
+  s-loki:
+    image: grafana/loki:3.5.5
+    container_name: c-loki
+    restart: unless-stopped
+    ports:
+      - '3100:3100'
+    networks:
+      - observability-net
+
+  s-promtail:
+    image: grafana/promtail:3.5.5
+    container_name: c-promtail
+    restart: unless-stopped
+    volumes:
+      - ./promtail/promtail.yml:/etc/promtail/promtail.yml
+      - ./../logs:/var/log/spring-app
+    command: [ '-config.file=/etc/promtail/promtail.yml' ]
+    networks:
+      - observability-net
+
 networks:
   observability-net:
     name: observability-net
