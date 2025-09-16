@@ -14,11 +14,13 @@
             <PatternLayout pattern="${LOG_PATTERN}"/>
         </Console>
 
-        <!-- Appender: Archivo con rotación diaria -->
+        <!-- Appender: Archivo con rotación diaria en JSON-->
         <RollingFile name="FILE"
                      fileName="${LOG_PATH}/${APP_NAME}.log"
                      filePattern="${LOG_PATH}/${APP_NAME}_%d{yyyy-MM-dd}.log">
-            <PatternLayout pattern="${LOG_PATTERN}"/>
+            <JsonTemplateLayout eventTemplateUri="classpath:CustomLayout.json">
+                <EventTemplateAdditionalField key="service" value="${APP_NAME}"/>
+            </JsonTemplateLayout>
             <Policies>
                 <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
             </Policies>
