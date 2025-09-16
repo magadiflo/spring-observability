@@ -18,7 +18,7 @@
         <RollingFile name="FILE"
                      fileName="${LOG_PATH}/${APP_NAME}.log"
                      filePattern="${LOG_PATH}/${APP_NAME}_%d{yyyy-MM-dd}.log">
-            <JsonTemplateLayout eventTemplateUri="classpath:CustomLayout.json">
+            <JsonTemplateLayout eventTemplateUri="classpath:custom-layout.json">
                 <EventTemplateAdditionalField key="service" value="${APP_NAME}"/>
             </JsonTemplateLayout>
             <Policies>
