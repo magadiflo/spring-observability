@@ -42,6 +42,20 @@ services:
     networks:
       - observability-net
 
+  s-tempo:
+    image: grafana/tempo:2.8.2
+    container_name: c-tempo
+    restart: unless-stopped
+    ports:
+      - "4317:4317"   # OTLP gRPC receiver
+      - "4318:4318"   # OTLP HTTP receiver
+      - "3200:3200"   # Tempo UI (opcional, útil para debug)
+    volumes:
+      - ./tempo/tempo.yml:/etc/tempo/tempo.yml
+    command: [ '-config.file=/etc/tempo/tempo.yml' ]
+    networks:
+      - observability-net
+
 networks:
   observability-net:
     name: observability-net
