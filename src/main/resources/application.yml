@@ -12,6 +12,12 @@ management:
     web:
       exposure:
         include: health, metrics, prometheus
+  tracing:
+    sampling:
+      probability: 1.0  # Captura el 100% de trazas (en prod suele usarse 0.1 o 0.01)
+  otlp:
+    tracing:
+      endpoint: http://localhost:4318/v1/traces  # OTLP HTTP (Tempo)
 
 logging:
   level:

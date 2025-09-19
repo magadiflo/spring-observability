@@ -25,5 +25,13 @@
     "stackTrace": {
       "stringified": true
     }
+  },
+  "traceId": {
+    "$resolver": "mdc",
+    "key": "traceId"
+  },
+  "spanId": {
+    "$resolver": "mdc",
+    "key": "spanId"
   }
 }
